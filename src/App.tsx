@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Footer from "./components/Footer";
-import Posts from "./pages/Posts";
+import Home from "./pages/Home";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import styles from "./App.module.css";
 
@@ -9,13 +8,10 @@ function App() {
   return (
     <BrowserRouter>
       <div className={styles.app}>
-        <main className={styles.main}>
-          <Routes>
-            <Route path="/" element={<Posts />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          </Routes>
-        </main>
-        <Footer />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        </Routes>
       </div>
     </BrowserRouter>
   );

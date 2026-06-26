@@ -11,9 +11,13 @@ export interface Post {
   };
   date?: string;
   link?: string;
+  slug?: string;
   categories?: number[];
   featured_media?: number;
   _embedded?: {
+    author?: Array<{
+      name: string;
+    }>;
     "wp:featuredmedia"?: Array<{
       source_url?: string;
       alt_text?: string;
@@ -25,4 +29,10 @@ export interface Post {
       }>
     >;
   };
+}
+
+export interface PostsResponse {
+  posts: Post[];
+  totalPages: number;
+  total: number;
 }

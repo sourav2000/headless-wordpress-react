@@ -1,0 +1,27 @@
+:root {
+  --bg: #0b0f19;
+  --surface: #111827;
+  --surface-elevated: #1a2234;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(124, 58, 237, 0.35);
+
+  --text: #9ca3af;
+  --text-muted: #6b7280;
+  --text-heading: #ffffff;
+
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-glow: rgba(124, 58, 237, 0.35);
+  --accent-subtle: rgba(124, 58, 237, 0.15);
+
+  --container-max: 1280px;
+  --radius-lg: 20px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.25);
+  --shadow-lift: 0 12px 40px rgba(0, 0, 0, 0.4);
+
+  --transition: 0.25s ease;
+  --font-sans: system-ui, "Segoe UI", Roboto, sans-serif;
+}

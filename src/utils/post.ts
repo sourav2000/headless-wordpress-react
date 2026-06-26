@@ -44,6 +44,10 @@ export function getCategoryName(post: Post): string {
   return "Uncategorized";
 }
 
+export function getAuthorName(post: Post): string {
+  return post._embedded?.author?.[0]?.name ?? "admin";
+}
+
 export function getFeaturedImageUrl(post: Post): string | null {
   const media = post._embedded?.["wp:featuredmedia"]?.[0];
   return media?.source_url ?? null;

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
 import { getPageBySlug } from "../api/wordpress";
-import LoadingState from "../components/LoadingState";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import Skeleton from "../components/Skeleton";
 import type { Page } from "../types/page";
 import styles from "./PrivacyPolicy.module.css";
 
@@ -30,36 +32,40 @@ function PrivacyPolicy() {
     fetchPage();
   }, []);
 
-  if (loading) {
-    return (
-      <div className={styles.page}>
-        <LoadingState />
-      </div>
-    );
-  }
-
-  if (error || !page) {
-    return (
-      <div className={styles.page}>
-        <div className={styles.container}>
-          <p className={styles.error}>{error ?? "Privacy Policy page not found."}</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.page}>
-      <article className={styles.container}>
-        <h1
-          className={styles.title}
-          dangerouslySetInnerHTML={{ __html: page.title.rendered }}
-        />
-        <div
-          className={styles.content}
-          dangerouslySetInnerHTML={{ __html: page.content.rendered }}
-        />
-      </article>
+      <Header />
+
+      {loading ? (
+        <div className={styles.container}>
+          <Skeleton width="40%" height="36px" />
+          <div className={styles.skeletonContent}>
+            <Skeleton width="100%" height="16px" />
+            <Skeleton width="95%" height="16px" />
+            <Skeleton width="90%" height="16px" />
+            <Skeleton width="100%" height="16px" />
+          </div>
+        </div>
+      ) : error || !page ? (
+        <div className={styles.container}>
+          <p className={styles.error} role="alert">
+            {error ?? "Privacy Policy page not found."}
+          </p>
+        </div>
+      ) : (
+        <article className={styles.container}>
+          <h1
+            className={styles.title}
+            dangerouslySetInnerHTML={{ __html: page.title.rendered }}
+          />
+          <div
+            className={styles.content}
+            dangerouslySetInnerHTML={{ __html: page.content.rendered }}
+          />
+        </article>
+      )}
+
+      <Footer />
     </div>
   );
 }
