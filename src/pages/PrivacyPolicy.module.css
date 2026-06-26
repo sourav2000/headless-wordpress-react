@@ -1,0 +1,75 @@
+.page {
+  flex: 1;
+  background: #0a0b10;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+  box-sizing: border-box;
+}
+
+.title {
+  margin: 0 0 32px;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.content {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #9ca3af;
+}
+
+.content :global(h2),
+.content :global(h3),
+.content :global(h4) {
+  margin: 2rem 0 1rem;
+  color: #ffffff;
+}
+
+.content :global(p) {
+  margin: 0 0 1rem;
+}
+
+.content :global(a) {
+  color: #6366f1;
+  text-decoration: none;
+}
+
+.content :global(a:hover) {
+  text-decoration: underline;
+}
+
+.content :global(ul),
+.content :global(ol) {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+}
+
+.error {
+  margin: 0;
+  padding: 24px;
+  font-size: 0.9375rem;
+  color: #f87171;
+  text-align: center;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 32px 16px 48px;
+  }
+
+  .title {
+    margin-bottom: 24px;
+    font-size: 1.625rem;
+  }
+}

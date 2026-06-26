@@ -1,5 +1,5 @@
 .page {
-  min-height: 100svh;
+  flex: 1;
   background: #0a0b10;
 }
 
