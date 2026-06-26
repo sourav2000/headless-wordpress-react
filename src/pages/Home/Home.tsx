@@ -23,47 +23,78 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategoryId, setActiveCategoryId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [postsLoading, setPostsLoading] = useState(true);
+  const [sidebarLoading, setSidebarLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const loading = postsLoading || sidebarLoading;
 
   useEffect(() => {
     let ignore = false;
 
-    async function fetchData() {
+    async function fetchSidebar() {
+      try {
+        const [categoriesData, recentData] = await Promise.all([
+          getCategories(),
+          getRecentPosts(),
+        ]);
+
+        if (ignore) return;
+
+        setCategories(categoriesData);
+        setRecentPosts(recentData);
+      } catch (err) {
+        if (ignore) return;
+
+        console.error("Error fetching sidebar data:", err);
+        setError("Unable to load posts. Please try again later.");
+      } finally {
+        if (!ignore) {
+          setSidebarLoading(false);
+        }
+      }
+    }
+
+    void fetchSidebar();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function fetchPosts() {
       setError(null);
 
       try {
-        const [postsResponse, categoriesData, recentData, allPostsResponse] =
-          await Promise.all([
-            getPosts(currentPage, POSTS_PER_PAGE, {
-              search: searchQuery || undefined,
-              categoryId: activeCategoryId,
-            }),
-            getCategories(),
-            getRecentPosts(),
-            getPosts(1, 1),
-          ]);
+        const postsResponse = await getPosts(currentPage, POSTS_PER_PAGE, {
+          search: searchQuery || undefined,
+          categoryId: activeCategoryId,
+        });
 
         if (ignore) return;
 
         setPosts(postsResponse.posts);
         setTotalPages(postsResponse.totalPages);
-        setAllPostsTotal(allPostsResponse.total);
-        setCategories(categoriesData);
-        setRecentPosts(recentData);
-      } catch (err) {
-        if (!ignore) {
-          console.error("Error fetching data:", err);
-          setError("Unable to load posts. Please try again later.");
+
+        if (!searchQuery && activeCategoryId === null) {
+          setAllPostsTotal(postsResponse.total);
         }
+      } catch (err) {
+        if (ignore) return;
+
+        console.error("Error fetching posts:", err);
+        setError("Unable to load posts. Please try again later.");
       } finally {
         if (!ignore) {
-          setLoading(false);
+          setPostsLoading(false);
         }
       }
     }
 
-    void fetchData();
+    void fetchPosts();
 
     return () => {
       ignore = true;
@@ -75,19 +106,19 @@ function Home() {
   };
 
   const handleSearch = (query: string) => {
-    setLoading(true);
+    setPostsLoading(true);
     setSearchQuery(query);
     setCurrentPage(1);
   };
 
   const handleCategorySelect = (categoryId: number | null) => {
-    setLoading(true);
+    setPostsLoading(true);
     setActiveCategoryId(categoryId);
     setCurrentPage(1);
   };
 
   const handlePageChange = (page: number) => {
-    setLoading(true);
+    setPostsLoading(true);
     setCurrentPage(page);
     postsRef.current?.scrollIntoView({ behavior: "smooth" });
   };

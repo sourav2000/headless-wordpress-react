@@ -13,23 +13,35 @@ function PrivacyPolicy() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let ignore = false;
+
     const fetchPage = async () => {
       try {
         const data = await getPageBySlug("privacy-policy");
+        if (ignore) return;
+
         if (!data) {
           setError("Privacy Policy page not found.");
           return;
         }
         setPage(data);
       } catch (err) {
+        if (ignore) return;
+
         console.error("Error fetching privacy policy:", err);
         setError("Failed to load Privacy Policy.");
       } finally {
-        setLoading(false);
+        if (!ignore) {
+          setLoading(false);
+        }
       }
     };
 
-    fetchPage();
+    void fetchPage();
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   return (
